@@ -22,7 +22,7 @@ const Table = ({ rows, loading, sortData }) => {
               sortData("quantity");
             }}
           >
-            Количествоjrnfjrnfjusnfjrnfjrnfjr
+            Количество
           </th>
           <th
             onClick={() => {
