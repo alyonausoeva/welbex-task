@@ -13,7 +13,7 @@ function App() {
   const [currentPage, setCurrectPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchText, setSearchText] = useState("");
-  const [sort, setSort] = useState("asc");
+  const [sort, setSort] = useState(true);
 
   const getFiltredRows = () => {
     if (!searchText) {
@@ -22,7 +22,7 @@ function App() {
 
     return rows.filter((item) => {
       console.log(searchText);
-      return item["title"].includes(searchText);
+      return item["title"].toLowerCase().includes(searchText.toLowerCase());
     });
   };
 
@@ -49,9 +49,18 @@ function App() {
 
   const sortData = (sortField) => {
     const clonedRows = rows.concat();
-    const orderedRows = clonedRows.sort((a, b) => {
-      return a.sortField > b.sortField ? 1 : -1;
-    });
+    let orderedRows;
+    if (sort) {
+      orderedRows = clonedRows.sort((a, b) => {
+        return a[sortField] > b[sortField] ? 1 : -1;
+      });
+    } else {
+      orderedRows = clonedRows.sort((a, b) => {
+        return a[sortField] < b[sortField] ? 1 : -1;
+      });
+    }
+    setRows(orderedRows);
+    setSort(!sort);
     console.log(orderedRows);
   };
 
