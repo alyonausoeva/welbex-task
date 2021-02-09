@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import Table from "./components/Table/Table";
-import Pagination from "./components/Pagination/Pagination";
+import Pagination from "./components/Pagination/getCurrentRows";
 import SearchForm from "./components/SearchForm/SearchForm";
+import getFiltredRows from "./components/Filter/filter";
+import getSortedData from "./components/Sort/sort";
 
 import "./App.css";
+import getCurrentRows from "./components/Pagination/paginator";
 
 function App() {
   const [rows, setRows] = useState([]);
@@ -17,31 +20,6 @@ function App() {
   const [condition, setCondition] = useState("");
   const [columnTitle, setColumnTitle] = useState("");
 
-  const getFiltredRows = () => {
-    if (searchText && columnTitle && condition) {
-      return rows.filter((item) => {
-        if (condition === "equal") {
-          return item[columnTitle].toString() === searchText;
-        }
-        if (condition === "less") {
-          return item[columnTitle] < searchText;
-        }
-        if (condition === "greater") {
-          return item[columnTitle] > searchText;
-        }
-        if (condition === "contain") {
-          return item[columnTitle]
-            .toLowerCase()
-            .includes(searchText.toLowerCase());
-        }
-        return <h2> Записи отсутсвуют </h2>;
-      });
-    }
-    return rows;
-  };
-
-  const filtredRows = getFiltredRows();
-
   useEffect(() => {
     const fetchRows = async () => {
       setLoading(true);
@@ -52,10 +30,17 @@ function App() {
     fetchRows();
   }, []);
 
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = filtredRows.slice(indexOfFirstRow, indexOfLastRow);
-  const paginate = (pageNumber) => setCurrectPage(pageNumber);
+  const filtredRows = getFiltredRows(searchText, columnTitle, condition, rows);
+  const currentRows = getCurrentRows(
+    filtredRows,
+    currentPage,
+    rowsPerPage,
+    setCurrectPage
+  );
+
+  const paginate = (pageNumber) => {
+    setCurrectPage(pageNumber);
+  };
 
   const onSearchSend = (text, firstSelect, secondSelect) => {
     setSearchText(text);
@@ -64,19 +49,7 @@ function App() {
   };
 
   const sortData = (sortField) => {
-    const clonedRows = rows.concat();
-    let orderedRows;
-    if (sort) {
-      orderedRows = clonedRows.sort((a, b) => {
-        return a[sortField] > b[sortField] ? 1 : -1;
-      });
-    } else {
-      orderedRows = clonedRows.sort((a, b) => {
-        return a[sortField] < b[sortField] ? 1 : -1;
-      });
-    }
-    setRows(orderedRows);
-    setSort(!sort);
+    getSortedData(sortField, rows, sort, setRows, setSort);
   };
 
   return (
