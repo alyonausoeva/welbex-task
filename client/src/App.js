@@ -23,6 +23,7 @@ function App() {
     }
 
     return rows.filter((item) => {
+      console.log(typeof item[columnTitle].toString());
       if (condition === "equal") {
         return item[columnTitle] === searchText;
       }
@@ -33,7 +34,7 @@ function App() {
         return item[columnTitle] > searchText;
       }
       if (condition === "contain") {
-        return item[columnTitle] > searchText;
+        return item[columnTitle].toString();
       }
       return rows;
     });

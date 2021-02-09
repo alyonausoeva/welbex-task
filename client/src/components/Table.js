@@ -7,13 +7,14 @@ const Table = ({ rows, loading, sortData }) => {
   }
   return (
     <table className="table">
-      <thead>
+      <thead style={{ backgroundColor: "#badeff" }}>
         <tr>
           <th>Дата</th>
           <th
             onClick={() => {
               sortData("title");
             }}
+            style={{ cursor: "pointer" }}
           >
             Название
           </th>
@@ -21,6 +22,7 @@ const Table = ({ rows, loading, sortData }) => {
             onClick={() => {
               sortData("quantity");
             }}
+            style={{ cursor: "pointer" }}
           >
             Количество
           </th>
@@ -28,6 +30,7 @@ const Table = ({ rows, loading, sortData }) => {
             onClick={() => {
               sortData("distance");
             }}
+            style={{ cursor: "pointer" }}
           >
             Расстояние
           </th>
