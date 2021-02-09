@@ -31,6 +31,7 @@ function App() {
   }, []);
 
   const filtredRows = getFiltredRows(searchText, columnTitle, condition, rows);
+
   const currentRows = getCurrentRows(
     filtredRows,
     currentPage,
