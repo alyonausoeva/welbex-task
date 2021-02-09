@@ -1,8 +1,8 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-import Table from "./components/Table";
-import Pagination from "./components/Pagination";
+import Table from "./components/Table/Table";
+import Pagination from "./components/Pagination/Pagination";
 import SearchForm from "./components/SearchForm/SearchForm";
 
 import "./App.css";
@@ -11,7 +11,7 @@ function App() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrectPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(4);
   const [searchText, setSearchText] = useState("");
   const [sort, setSort] = useState(true);
   const [condition, setCondition] = useState("");
@@ -25,7 +25,7 @@ function App() {
     return rows.filter((item) => {
       console.log(typeof item[columnTitle].toString());
       if (condition === "equal") {
-        return item[columnTitle] === searchText;
+        return item[columnTitle] == searchText;
       }
       if (condition === "less") {
         return item[columnTitle] < searchText;
@@ -81,7 +81,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>My Table</h1>
+      <h1>Тестовое задание Welbex</h1>
       <SearchForm onSearchSend={onSearchSend} />
       <Table rows={currentRows} loading={loading} sortData={sortData} />
 
