@@ -14,15 +14,28 @@ function App() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchText, setSearchText] = useState("");
   const [sort, setSort] = useState(true);
+  const [condition, setCondition] = useState("");
+  const [columnTitle, setColumnTitle] = useState("");
 
   const getFiltredRows = () => {
-    if (!searchText) {
+    if (!searchText || !columnTitle || !condition) {
       return rows;
     }
 
     return rows.filter((item) => {
-      console.log(searchText);
-      return item["title"].toLowerCase().includes(searchText.toLowerCase());
+      if (condition === "equal") {
+        return item[columnTitle] === searchText;
+      }
+      if (condition === "less") {
+        return item[columnTitle] < searchText;
+      }
+      if (condition === "greater") {
+        return item[columnTitle] > searchText;
+      }
+      if (condition === "contain") {
+        return item[columnTitle] > searchText;
+      }
+      return rows;
     });
   };
 
@@ -43,8 +56,10 @@ function App() {
   const currentRows = filtredRows.slice(indexOfFirstRow, indexOfLastRow);
   const paginate = (pageNumber) => setCurrectPage(pageNumber);
 
-  const onSearchSend = (text) => {
+  const onSearchSend = (text, firstSelect, secondSelect) => {
     setSearchText(text);
+    setColumnTitle(firstSelect);
+    setCondition(secondSelect);
   };
 
   const sortData = (sortField) => {
@@ -61,7 +76,6 @@ function App() {
     }
     setRows(orderedRows);
     setSort(!sort);
-    console.log(orderedRows);
   };
 
   return (
